@@ -113,4 +113,51 @@ async function createPipelineJob(team, jobName) {
   }
 }
 
-module.exports = { createFolder, createPipelineJob };
+
+async function listJobs(team) {
+  try {
+    const res = await jenkins.get(`/job/${team}/api/json`);
+
+    if (!res.data.jobs) return [];
+
+    return res.data.jobs.map(job => job.name);
+
+  } catch (err) {
+    if (err.response) {
+      throw `Status: ${err.response.status}`;
+    }
+    throw err.message;
+  }
+}
+
+async function triggerBuild(team, job) {
+  try {
+    const crumb = await getCrumb();
+
+    const res = await jenkins.post(
+      `/job/${team}/job/${job}/build`,
+      {},
+      {
+        headers: {
+          [crumb.crumbRequestField]: crumb.crumb
+        }
+      }
+    );
+
+    return res.status === 201 || res.status === 200;
+
+  } catch (err) {
+    if (err.response) {
+      throw `Status: ${err.response.status}`;
+    }
+    throw err.message;
+  }
+}
+
+
+module.exports = {
+  createFolder,
+  createPipelineJob,
+  listJobs,
+  triggerBuild
+};
