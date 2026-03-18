@@ -13,7 +13,8 @@ program
   .description('CLI tool for managing multi-tenancy in Jenkins')
   .version('1.0.0');
 
-/* =========================
+/* 
+=========================
    TEST COMMAND
 ========================= */
 program
@@ -23,7 +24,8 @@ program
     console.log(chalk.green('✔ CLI is working!'));
   });
 
-/* =========================
+/* 
+=========================
    TEAM COMMANDS
 ========================= */
 program
@@ -31,7 +33,8 @@ program
   .description('Create a new team in Jenkins')
   .action(createTeam);
 
-/* =========================
+/* 
+=========================
    PIPELINE COMMANDS
 ========================= */
 program
